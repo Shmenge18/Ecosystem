@@ -1,14 +1,75 @@
-from Player_Class import Player, Caveman_List
-from Functions import squarestouching
+from Player_Class import Player, Caveman_List, firelist
+from Functions import squarestouching, getdistance
 from random import randint
+import pygame
+from MainLoop import screen
+class fire:
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
+        self.timer = 500
+    def spawn(self, firelist):
+        firewidth = 10
+        fireheight = 10
+        firecolour = "red"
+        build = True
+        if len(firelist) > 1:
+            q = 0
+            for i in range (len(firelist)):
+                distance = getdistance(self, firelist[q])
+                if distance <= 20:
+                    build = False
+                    break
+                else:
+                    build = True
+                q = q + 1
 
+        if build == True:
+            pygame.draw.rect(screen, firecolour, pygame.Rect(self.x - firewidth // 2, self.y - fireheight // 2, firewidth, fireheight))
+            firelist.append(self)
+            self.sticks -= 1
+            print("sticks", self.sticks)
+
+
+    def burnout(self):
+        firelist.remove(self)
+
+    def grow(self):
+        self.timer = self.timer + 20
+        self.x = self.x + 1
+        self.y = self.y + 1
 class Caveman(Player):
     def __init__(self,x,y):
         Player.__init__(self,x,y)
         self.color = "grey"
         self.type = "caveman"
         self.strength = 2
+        timer = 100
+        self.sticks = 1
         Caveman_List.append(self)
+
+    def createfire(self):
+        if self.action_allowed:
+            if self.sticks >=0:
+                newfire = fire(self.x, self.y)
+                newfire.spawn(firelist)
+                self.sticks = self.sticks - 1
+
+    def addsticks(self):
+        if self.action_allowed:
+            if self.sticks >= 1:
+                if squarestouching(self, self.target):
+                    fire = self.target
+                    fire.grow()
+                    self.sticks = self.sticks - 1
+
+
+    def time(self):
+        pass
+
+
+
+
 
     def attack(self):
         if self.action_allowed:
