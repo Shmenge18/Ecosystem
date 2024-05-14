@@ -56,16 +56,19 @@ class PlantCell(Player):
         self.planttype = plant
         if plant.type == "dirt":
             Dirt_List.append(self)
+
         elif plant.type == "grass":
             self.MaxPollen = 3
             self.pollencount = self.MaxPollen
             Grass_List.append(self)
+
         elif plant.type == "bush":
             if random.randint(0, 1) == 0:
                 self.planttype.AddBerries()
                 self.MaxBerries = 1
                 self.HasBerries = self.MaxBerries
             Bush_List.append(self)
+            
         elif plant.type == "tree":
             Tree_List.append(self)
 
