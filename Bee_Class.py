@@ -1,14 +1,13 @@
-from Player_Class import Player, Bee_List, Hive_List
+from Player_Class import Player, Bee_List, Hive_List, Tree_List
 from copy import deepcopy
 from math import pi,cos,sin
 from Functions import squarestouching
+import random
 
 
 class Hive(Player):
     def __init__(self,x,y,classname):
         Player.__init__(self,x,y)
-        self.x = self.x + 5
-        self.y = self.y + 3
         self.color = "white"
         self.type = "hive"
         self.count = 0
@@ -17,28 +16,33 @@ class Hive(Player):
         self.childclass = classname
         self.childlist = []
         Hive_List.append(self)
-
     def act(self):
         if self.countdown == 0:
             self.childlist.append(self.childclass(self.x,self.y,self.childclass))
+            Bee_List.append(self.childclass(self.x,self.y,self.childclass))
             self.count += 1
             self.countdown = self.countdowntime
         self.countdown -= 1
-
     def kill(self):
-        self.childlist = []
-        child = self.childclass(self.x,self.y,self.childclass)
-        child.queen = True
+        new_location = random.randint(0,len(Tree_List)-1)
+        for x in range(len(Tree_List)):
+            if x == new_location:
+                Tree_List[x].planttype.AddHive()
+                Hive_List[-1].stunned = True
         Hive_List.pop(Hive_List.index(self))
 
 
+
+
+
+
+
 class Bee(Player):
-    def __init__(self,x,y):
+    def __init__(self,x,y,classname):
         Player.__init__(self,x,y)
         Bee_List.append(self)
-
-        # self.classname = classname
-        self.age = 75
+        self.classname = classname
+        self.age = 1350
 
         # Change these to stats bees should have
         self.width = 5
@@ -55,6 +59,7 @@ class Bee(Player):
         self.polin = 0
         self.maxpolin = 0
         self.queen = False
+        self.childlist = []
 
     def kill(self):
         Bee_List.pop(Bee_List.index(self))
@@ -62,7 +67,11 @@ class Bee(Player):
         if self.action_allowed:
             self.action_allowed = False
             if self.target.type == "tree" and squarestouching(self,self.target) and self.queen:
-                Hive(self.x,self.y,self.classname)
+                Hive(self.target.x,self.target.y,self.classname)
+                self.target(Hive)
+                self.target.childlist = self.childlist
+                self.kill()
+
     def move(self):
         if self.action_allowed:
             self.action_allowed = False
@@ -76,7 +85,7 @@ class Bee(Player):
             if squarestouching(self,self.target):
                 if self.target.type == "grass" and self.target.polincount < 10:
                     self.polin = min(self.polin+1,self.maxpolin)
-                    self.target.polincount += 1
+                    self.target.polincount -= 1
     def makehoney(self):
         try:
             if not self.queen and self.action_allowed:
