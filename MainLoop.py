@@ -103,7 +103,7 @@ def main():
                 screen.blit(x.image, pygame.Rect(x.x-x.width//2, x.y-x.height//2, x.width, x.height))
             if x.target not in Dirt_List+Bush_List+Grass_List+Tree_List+Twig_List+Sheep_List+Wolf_List+Caveman_List+Bee_List+Hive_List:
                 x.target = None
-            if x.age == 150 and hungeron and x not in Grass_List+Tree_List+Bush_List+Twig_List+Hive_List+Dirt_List:
+            if x.age == 1000 and hungeron and x not in Grass_List+Tree_List+Bush_List+Twig_List+Hive_List+Dirt_List:
                 x.kill()
 
             x.tick()
