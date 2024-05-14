@@ -1,0 +1,40 @@
+
+from random import randint
+from Sheep_Class import Sheep
+from Wolf_Class import Wolf
+from Bee_Class import Bee
+from Caveman_Class import Caveman
+
+
+class randomSheep(Sheep):
+    def __init__(self,x,y):
+        Sheep.__init__(self,x,y)
+    def act(self):
+       self.speed = 8
+       self.direction = randint(0,360)
+       self.move()
+
+
+class randomBee(Bee):
+    def __init__(self,x,y):
+        Bee.__init__(self,x,y)
+    def act(self):
+       self.speed = 10
+       self.direction = randint(0,360)
+       self.move()
+
+class randomCaveman(Caveman):
+    def __init__(self,x,y):
+        Caveman.__init__(self,x,y)
+    def act(self):
+       self.speed = 10
+       self.direction = randint(0,360)
+       self.move()
+
+class randomWolf(Wolf):
+    def __init__(self,x,y):
+        Wolf.__init__(self,x,y)
+    def act(self):
+       self.speed = 10
+       self.direction = randint(0,360)
+       self.move()
