@@ -1,10 +1,14 @@
+
+import pygame
+screen = pygame.display.set_mode([700, 700])
+
 def main():
     #Pygame import
     import pygame
 
     #Project Files
     from Player_Class import (Dirt_List,Grass_List,Bush_List, Bee_List,Wolf_List,Sheep_List,Tree_List, Hive_List,
-                              Caveman_List, Twig_List)
+                              Caveman_List, Twig_List, firelist)
     from Plants_Classes import Grass, Tree
     from RandomAnimals import randomSheep, randomBee, randomWolf, randomCaveman
     from PlantGrid import CreatePlantGrid
@@ -62,6 +66,7 @@ def main():
             if event.type == pygame.QUIT:
                 running = False
         screen.fill("black")
+        y = 0
 
         #Runs for all charcteres as x
         for x in Dirt_List+Grass_List+Tree_List+Bush_List+Twig_List+Sheep_List+Wolf_List+Caveman_List+Bee_List+Hive_List:
@@ -98,11 +103,24 @@ def main():
                 screen.blit(x.image, pygame.Rect(x.x-x.width//2, x.y-x.height//2, x.width, x.height))
             if x.target not in Dirt_List+Bush_List+Grass_List+Tree_List+Twig_List+Sheep_List+Wolf_List+Caveman_List+Bee_List+Hive_List:
                 x.target = None
-            if x.age == 150 and hungeron and x not in Grass_List+Tree_List+Bush_List+Twig_List+Hive_List+Dirt_List:
+            if x.age == 150 and hungeron and x.type not in ["tree","grass"]:
                 x.kill()
 
             x.tick()
+        y = 0
+        for x in firelist:
+
+            x.timer = x.timer - 1
+            if x.timer == 0:
+                x.burnout()
+            firewidth = 10
+            fireheight = 10
+            firecolour = "red"
+            pygame.draw.rect(screen, firecolour, pygame.Rect(x.x - firewidth // 2, x.y - fireheight // 2, firewidth, fireheight))
+            y = y + 1
+
         # print(len(Grass_List) + len(Dirt_List) + len(Tree_List) + len(Bush_List))
+        # print(len(Twig_List))
         pygame.time.Clock().tick(30)
         pygame.display.flip()
 
