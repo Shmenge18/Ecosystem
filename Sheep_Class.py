@@ -29,6 +29,8 @@ class Sheep(Player):
         if squarestouching(self, self.target):
             self.target.kill()
             self.target = None
+            self.age -= randint(50, 200)
+            self.score += 2
 
     def attack(self):
         if self.action_allowed:

@@ -78,11 +78,13 @@ class PlantCell(Player):
         elif self.planttype.type == "bush":
             if self.HasBerries > 0:
                 self.HasBerries -= 1
+                return True
             elif self.HasBerries <= 0:
                 self.planttype.RemoveBerries()
                 self.image = pygame.transform.scale(pygame.image.load(self.planttype.image), (50, 50))
             else:
                 self.berrycycle = 0
+                return False
 
     def regrow(self):
         self.ChangePlant(PTypes.Grass())

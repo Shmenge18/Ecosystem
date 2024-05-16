@@ -9,6 +9,8 @@ from random import randint
 class Hive(Player):
     def __init__(self,x,y,classname):
         Player.__init__(self,x,y)
+        self.x = self.x + 5
+        self.y = self.y + 3
         self.color = "white"
         self.type = "hive"
         self.count = 0
@@ -81,6 +83,7 @@ class Bee(Player):
             if squarestouching(self,self.target):
                 if self.target.planttype.type == "grass" and self.target.pollinate():
                     self.polin = min(self.polin+1,self.maxpolin)
+
     def makehoney(self):
         try:
             if self.action_allowed:
@@ -91,7 +94,8 @@ class Bee(Player):
                         point(self.x,self.y,0)
                         self.polin = 0
         except:
-            print("Honey Was not succesfully Made")
+            pass
+            # print("Honey Was not succesfully Made")
     def upgrade_char(self,next_Upgrade):
         if next_Upgrade == "MS":
             self.max_Speed += .3

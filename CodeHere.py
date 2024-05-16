@@ -11,12 +11,12 @@ from Bee_Class import Bee
 #Possible types - Bee, Sheep, Wolf, Caveman  (Make sure to spell properly starting with a capital letter)
 yourtype = "Bee"
 
-class Adam(Bee):
-    def __init__(self,x,y,Adam):
-        Bee.__init__(self,x,y,Adam)
+class randombee(Bee):
+    def __init__(self,x,y,randombee):
+        Bee.__init__(self,x,y,randombee)
     def act(self):
         self.direction = 0
-        self.speed = .10
+        self.speed = 10
         self.move()
 #Spawns your animals
 def spawnyourcreatures(x,y):
@@ -24,7 +24,7 @@ def spawnyourcreatures(x,y):
     #Adam(x,y)
 
     #If you are a bee just return your class name like this NO BRACKETS
-    return Adam
+    return randombee
 
 
 
@@ -35,9 +35,9 @@ hungeron = True
 RandomSpawn = False
 
 # Total tiles: 196
-grasses = 150
+grasses = 100
 trees = 35
-bushes = 15
+bushes = 20
 
 #THESE ARE NOT YOUR ANIMALS
 sheeps = 10

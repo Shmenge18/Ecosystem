@@ -48,6 +48,9 @@ class Caveman(Player):
         self.sticks = 1
         Caveman_List.append(self)
 
+    def act(self):
+        pass
+
     def createfire(self):
         if self.action_allowed:
             if self.sticks >=0:
@@ -81,6 +84,7 @@ class Caveman(Player):
                         if not self.target.defend(self.strength):
                             self.target.kill()
                             self.target = None
+                            self.age -= randint(500, 1000)
                             self.score += 3
                         else:
                             self.stunned = True
@@ -88,6 +92,7 @@ class Caveman(Player):
                     elif self.target.type == "hive" and self.stamina >= 5:
                         self.stamina = max(0,self.stamina-10)
                         self.target.kill()
+                        self.age -= (400, 600)
                         self.score += 1
                         self.target = None
                     elif self.target.type == "wolf" and self.stamina >= 25:
@@ -95,6 +100,7 @@ class Caveman(Player):
                         if not self.target.defend(self.strength):
                             self.target.kill()
                             self.target = None
+                            self.age -= (600, 1100)
                             self.score += 5
                         else:
                             self.stunned = True

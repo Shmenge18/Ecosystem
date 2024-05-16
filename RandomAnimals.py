@@ -10,10 +10,10 @@ from Functions import getclosest, getangle
 class randomSheep(Sheep):
     def __init__(self,x,y):
         Sheep.__init__(self,x,y)
-    def act(self):
-       self.speed = 8
-       self.direction = randint(0,360)
-       self.move()
+    # def act(self):
+    #    self.speed = 8
+    #    self.direction = randint(0,360)
+    #    self.move()
 
 
 class randomBee(Bee):
