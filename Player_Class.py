@@ -22,6 +22,9 @@ Obstruction_List = []
 Caveman_List = []
 Hive_List = []
 
+#Mis
+firelist = []
+
 # PLANTS
 Grass_List = []
 Tree_List = []
@@ -29,6 +32,8 @@ Dirt_List = []
 Bush_List = []
 Twig_List = []
 
+#Point List Used for one special effect
+Point_List = []
 
 
 #Here we go
@@ -85,14 +90,15 @@ class Player:
         self.dirtlist = []
         self.bushlist = []
         self.twiglist = []
+        self.hivelist = []
 
     #Scan function can stay the same for all other classes
     def scan(self):
         if self.action_allowed:
             self.action_allowed = False
-            listtype1 = [Sheep_List, Bee_List, Wolf_List, Grass_List, Tree_List, Dirt_List, Bush_List, Twig_List]
+            listtype1 = [Sheep_List, Bee_List, Wolf_List, Grass_List, Tree_List, Dirt_List, Bush_List, Twig_List, Hive_List]
             listtype2 = [self.sheeplist, self.beelist, self.wolflist, self.grasslist, self.treelist, self.dirtlist,
-                         self.bushlist, self.twiglist]
+                         self.bushlist, self.twiglist, self.hivelist]
             for y in range(0, len(listtype1)):
                 for x in listtype1[y]:
                     if getdistance(self, x) <= self.viewrange and x != self:
@@ -121,10 +127,6 @@ class Player:
 
             #Will lower stamina by the speed
             self.stamina -= self.speed
-
-
-            #The math on how I decided what percentage of the speed is changing the y and what changes the x
-
 
     #Default reproduce condition Change this for new classees (This is not at all what it would look like)
     def reproducecondition(self):
@@ -160,7 +162,9 @@ class Player:
 
         if self.action_allowed:
             self.action_allowed = False
-            if self.type == self.target.type and self.target.target == self and self.reproducecondition():
+            if self.target == self:
+                print("Nice try, Mr. Elgersma already thought of that.")
+            elif self.type == self.target.type and self.target.target == self and self.reproducecondition():
                 child = deepcopy(self)
                 child.__init__(self.x,self.y)
 
@@ -172,6 +176,6 @@ class Player:
     def tick(self):
         self.reproducecountdown = max(0,self.reproducecountdown-1)
         self.age += 1
-    #Just in case the grade 11s don't add act function. THis will avoid an error
+
     def act(self):
         pass

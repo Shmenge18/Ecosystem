@@ -29,9 +29,8 @@ class Tree(PlantCell):
         self.type = "tree"
         # print("new tree made")
 
-    def AddHive(self):
-        Hive(self.x, self.y, None)
-
+    def AddHive(self,classname):
+        Hive(self.x, self.y, classname)
 
 
     def FallOver(self):
