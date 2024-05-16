@@ -1,12 +1,18 @@
 from Player_Class import Player, Wolf_List
 from Functions import squarestouching
 from random import randint
+
+
 class Wolf(Player):
     def __init__(self,x,y):
         Player.__init__(self,x,y)
         self.color = "pink"
         self.type = "wolf"
         Wolf_List.append(self)
+
+    def act(self):
+        pass
+
     def defend(self,oppattackstrength):
         self.stamina = max(0,self.stamina-5)
         self.action_allowed = True
@@ -23,6 +29,7 @@ class Wolf(Player):
                     if not self.target.defend(self.strength):
                         self.target.kill()
                         self.target = None
+                        self.age -= randint(500, 1000)
                         self.score += 5
                     else:
                         self.target = None

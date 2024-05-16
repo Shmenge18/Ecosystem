@@ -1,20 +1,20 @@
-
 import pygame
 screen = pygame.display.set_mode([700, 700])
-
+check = True
 def main():
+    global check
+    check = False
     #Pygame import
     import pygame
 
     #Project Files
-    from Player_Class import (Dirt_List,Grass_List,Bush_List, Bee_List,Wolf_List,Sheep_List,Tree_List, Hive_List,
-                              Caveman_List, Twig_List, firelist)
+    from Player_Class import (Dirt_List,Grass_List,Bush_List, Bee_List,Wolf_List,Sheep_List,Tree_List, Hive_List, Point_List, Caveman_List, Twig_List, firelist)
     from Plants_Classes import Grass, Tree
     from RandomAnimals import randomSheep, randomBee, randomWolf, randomCaveman
     from PlantGrid import CreatePlantGrid
     from Bee_Class import Hive
-
-    from CodeHere import hungeron, grasses, trees, bushes, sheeps, bees, wolfs,cavemans, RandomSpawn
+    from pointclass import point
+    from CodeHere import hungeron, grasses, trees, bushes, sheeps, bees, wolfs,cavemans, RandomSpawn, yourtype, spawnyourcreatures
 
     #Other imports
     from random import randint
@@ -38,6 +38,21 @@ def main():
     plantamounts = {"grass": grasses, "tree": trees, "bush": bushes}
     CreatePlantGrid(50, 50, screen, plantamounts, False)
 
+
+    if yourtype == "Sheep":
+        def randomSheep(x,y):
+            spawnyourcreatures(x,y)
+    elif yourtype in ["Caveman","Cavemen"]:
+        def randomCaveman(x,y):
+            spawnyourcreatures(x,y)
+    elif yourtype in ["Wolves","Wolf"]:
+        def randomWolf(x,y):
+            spawnyourcreatures(x,y)
+
+
+
+
+
     if RandomSpawn:
         for x in range(0, sheeps):
             randomSheep(randint(10, 690), randint(10, 690))
@@ -45,8 +60,6 @@ def main():
             randomWolf(randint(10, 690), randint(10, 690))
         for x in range(0, cavemans):
             randomCaveman(randint(10, 690), randint(10, 690))
-        for x in range(0, bees):
-            randomBee(randint(10, 690), randint(10, 690))
     else:
         for x in range(0,sheeps):
             randomSheep(randint(500,700),randint(500,700))
@@ -54,12 +67,11 @@ def main():
             randomWolf(randint(0,250),randint(0,250))
         for x in range(0,cavemans):
             randomCaveman(randint(0,250),randint(550,700))
-        for x in range(0, bees):
-            randomBee(randint(200, 400), randint(200, 400))
 
 
     #Main Loop
     running = True
+    point(500,500,0)
     while running:
         #Checks if the user closed the window
         for event in pygame.event.get():
@@ -87,10 +99,14 @@ def main():
             else:
                     #Lets the charcter act
                 x.action_allowed = True
-                try:
+                if x.type == "hive":
                     x.act()
-                except Exception as e:
-                    pass
+                else:
+                    try:
+                        x.act()
+                    except Exception as e:
+                        pass
+
                     # print(e)
                     # print("YOU SUCK AT PROGRAMMING")
                 #Removes the information given by the scan
@@ -103,7 +119,7 @@ def main():
                 screen.blit(x.image, pygame.Rect(x.x-x.width//2, x.y-x.height//2, x.width, x.height))
             if x.target not in Dirt_List+Bush_List+Grass_List+Tree_List+Twig_List+Sheep_List+Wolf_List+Caveman_List+Bee_List+Hive_List:
                 x.target = None
-            if x.age == 1000 and hungeron and x not in Grass_List+Tree_List+Bush_List+Twig_List+Hive_List+Dirt_List:
+            if x.age >= 200 and hungeron and x not in Grass_List+Tree_List+Bush_List+Twig_List+Hive_List+Dirt_List:
                 x.kill()
 
             x.tick()
@@ -118,11 +134,11 @@ def main():
             firecolour = "red"
             pygame.draw.rect(screen, firecolour, pygame.Rect(x.x - firewidth // 2, x.y - fireheight // 2, firewidth, fireheight))
             y = y + 1
-
+        for x in Point_List:
+            x.act()
+            pygame.draw.rect(screen, (200,255,200), pygame.Rect(x.x - x.width // 2, x.y - x.height // 2, x.width, x.height))
         # print(len(Grass_List) + len(Dirt_List) + len(Tree_List) + len(Bush_List))
         # print(len(Twig_List))
         pygame.time.Clock().tick(30)
         pygame.display.flip()
 
-
-main()

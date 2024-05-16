@@ -3,6 +3,8 @@ import pygame
 import random
 import time
 from Player_Class import Player, Grass_List, Dirt_List, Bush_List, Tree_List, Twig_List
+from CodeHere import yourtype, spawnyourcreatures
+from RandomAnimals import randomBee
 testgrid = []
 allplants = []
 
@@ -24,8 +26,8 @@ class PlantCell(Player):
         self.regrowcycle = 0
 
         # Grass
-        self.pollencount = 0
-        self.MaxPollen = 0
+        self.pollencount = 5
+        self.MaxPollen = 5
         self.pollencycle = 0
 
         # Trees
@@ -56,19 +58,16 @@ class PlantCell(Player):
         self.planttype = plant
         if plant.type == "dirt":
             Dirt_List.append(self)
-
         elif plant.type == "grass":
             self.MaxPollen = 3
             self.pollencount = self.MaxPollen
             Grass_List.append(self)
-
         elif plant.type == "bush":
             if random.randint(0, 1) == 0:
                 self.planttype.AddBerries()
                 self.MaxBerries = 1
                 self.HasBerries = self.MaxBerries
             Bush_List.append(self)
-            
         elif plant.type == "tree":
             Tree_List.append(self)
 
@@ -79,11 +78,13 @@ class PlantCell(Player):
         elif self.planttype.type == "bush":
             if self.HasBerries > 0:
                 self.HasBerries -= 1
+                return True
             elif self.HasBerries <= 0:
                 self.planttype.RemoveBerries()
                 self.image = pygame.transform.scale(pygame.image.load(self.planttype.image), (50, 50))
             else:
                 self.berrycycle = 0
+                return False
 
     def regrow(self):
         self.ChangePlant(PTypes.Grass())
@@ -180,7 +181,12 @@ def CreatePlantGrid(cellX, cellY, screen, plantgen, visualize):
     for p in allplants:
         if p.planttype.type == "tree":
             if random.randint(hivechance, totaltrees) == totaltrees:
-                p.planttype.AddHive()
+                print("did this even run bros")
+                if yourtype == "Bee":
+                    print("How about this ")
+                    p.planttype.AddHive(spawnyourcreatures(None,None))
+                else:
+                    p.planttype.AddHive(randomBee)
                 break
             else:
                 hivechance += 1

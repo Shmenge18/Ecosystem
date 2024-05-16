@@ -2,12 +2,13 @@ from Player_Class import Player, Caveman_List, firelist
 from Functions import squarestouching, getdistance
 from random import randint
 import pygame
-from MainLoop import screen
 class fire:
     def __init__(self, x, y):
         self.x = x
         self.y = y
         self.timer = 500
+        self.type = "fire"
+
     def spawn(self, firelist):
         firewidth = 10
         fireheight = 10
@@ -25,7 +26,7 @@ class fire:
                 q = q + 1
 
         if build == True:
-            pygame.draw.rect(screen, firecolour, pygame.Rect(self.x - firewidth // 2, self.y - fireheight // 2, firewidth, fireheight))
+            #pygame.draw.rect(screen, firecolour, pygame.Rect(self.x - firewidth // 2, self.y - fireheight // 2, firewidth, fireheight))
             firelist.append(self)
             self.sticks -= 1
             print("sticks", self.sticks)
@@ -44,9 +45,11 @@ class Caveman(Player):
         self.color = "grey"
         self.type = "caveman"
         self.strength = 2
-        timer = 100
         self.sticks = 1
         Caveman_List.append(self)
+
+    def act(self):
+        pass
 
     def createfire(self):
         if self.action_allowed:
@@ -58,7 +61,7 @@ class Caveman(Player):
     def addsticks(self):
         if self.action_allowed:
             if self.sticks >= 1:
-                if squarestouching(self, self.target):
+                if squarestouching(self, self.target) and self.target.type == "fire":
                     fire = self.target
                     fire.grow()
                     self.sticks = self.sticks - 1
@@ -81,6 +84,7 @@ class Caveman(Player):
                         if not self.target.defend(self.strength):
                             self.target.kill()
                             self.target = None
+                            self.age -= randint(500, 1000)
                             self.score += 3
                         else:
                             self.stunned = True
@@ -88,6 +92,7 @@ class Caveman(Player):
                     elif self.target.type == "hive" and self.stamina >= 5:
                         self.stamina = max(0,self.stamina-10)
                         self.target.kill()
+                        self.age -= (400, 600)
                         self.score += 1
                         self.target = None
                     elif self.target.type == "wolf" and self.stamina >= 25:
@@ -95,6 +100,7 @@ class Caveman(Player):
                         if not self.target.defend(self.strength):
                             self.target.kill()
                             self.target = None
+                            self.age -= (600, 1100)
                             self.score += 5
                         else:
                             self.stunned = True

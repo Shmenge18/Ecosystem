@@ -1,4 +1,3 @@
-
 from random import randint
 from Sheep_Class import Sheep
 from Wolf_Class import Wolf
@@ -11,15 +10,15 @@ from Functions import getclosest, getangle
 class randomSheep(Sheep):
     def __init__(self,x,y):
         Sheep.__init__(self,x,y)
-    def act(self):
-       self.speed = 8
-       self.direction = randint(0,360)
-       self.move()
+    # def act(self):
+    #    self.speed = 8
+    #    self.direction = randint(0,360)
+    #    self.move()
 
 
 class randomBee(Bee):
-    def __init__(self,x,y):
-        Bee.__init__(self,x,y)
+    def __init__(self,x,y,randomBee):
+        Bee.__init__(self,x,y,randomBee)
     def act(self):
        self.speed = 10
        self.direction = randint(0,360)
@@ -38,7 +37,6 @@ class randomCaveman(Caveman):
             elif x == 4:
 
                 self.addsticks()
-                print("TEST")
 
         self.speed = 10
         self.direction = randint(0,360)
